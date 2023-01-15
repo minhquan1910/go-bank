@@ -1,7 +1,7 @@
 package sqlc
 
 import (
-	"bank/db/util"
+	"bank/util"
 	"context"
 	"database/sql"
 	"testing"
