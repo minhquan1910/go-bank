@@ -37,4 +37,10 @@ mock:
 dockerpullaws:
 	aws ecr get-login-password | docker login --username AWS --password-stdin 476638607490.dkr.ecr.ap-southeast-1.amazonaws.com/simplebank
 
-.PHONY: postgres createdb dropdb migrateup migratedown migrateup1 migratedown1 migrateupaws sqlc test mock 
+proto:
+	rm -f pb/*.go
+	protoc --proto_path=proto --go_out=pb --go_opt=paths=source_relative \
+    --go-grpc_out=pb --go-grpc_opt=paths=source_relative \
+    proto/*.proto
+
+.PHONY: postgres createdb dropdb migrateup migratedown migrateup1 migratedown1 migrateupaws sqlc test mock proto
