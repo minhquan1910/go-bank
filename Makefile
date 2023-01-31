@@ -19,6 +19,9 @@ migrateup1:
 migratedown1:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down 1
 
+migrateupaws:
+	migrate -path db/migration -database "postgresql://root:quan1503@simple-bank.cgywovagculj.ap-southeast-1.rds.amazonaws.com:5432/simple_bank" -verbose up
+
 sqlc:
 	docker run --rm -v "%cd%:/src" -w /src kjconroy/sqlc generate
 
@@ -31,4 +34,7 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go bank/db/sqlc Store
 
-.PHONY: postgres createdb dropdb migrateup migratedown migrateup1 migratedown1 sqlc mock 
+dockerpullaws:
+	aws ecr get-login-password | docker login --username AWS --password-stdin 476638607490.dkr.ecr.ap-southeast-1.amazonaws.com/simplebank
+
+.PHONY: postgres createdb dropdb migrateup migratedown migrateup1 migratedown1 migrateupaws sqlc test mock 
